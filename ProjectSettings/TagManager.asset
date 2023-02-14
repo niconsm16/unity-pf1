@@ -15,6 +15,7 @@ TagManager:
   - Bus
   - Enemy
   - Metrobus
+  - Obelisco Light
   layers:
   - Default
   - TransparentFX

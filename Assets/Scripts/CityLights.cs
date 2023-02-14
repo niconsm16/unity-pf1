@@ -16,11 +16,19 @@ public class CityLights : MonoBehaviour
         
         sun.GetComponent<Light>().enabled = !night;
         
-        var poleLights = GameObject
-            .FindGameObjectsWithTag("PoleTrafficLight");
-        
-        foreach(var poleLight in poleLights)
-            poleLight.GetComponent<Light>().enabled = !day;
+        TurnLights("PoleTrafficLight", day);
+        TurnLights("Obelisco Light", day);
+        // var poleLights = GameObject
+        //     .FindGameObjectsWithTag("PoleTrafficLight");
+        //
+        // var obeliscoLights = GameObject
+        //     .FindGameObjectsWithTag(("Obelisco Light"));
+        //
+        // foreach(var poleLight in poleLights)
+        //     poleLight.GetComponent<Light>().enabled = !day;
+        //
+        // foreach(var poleLight in poleLights)
+        //     poleLight.GetComponent<Light>().enabled = !day;
     }
     
 
@@ -30,10 +38,21 @@ public class CityLights : MonoBehaviour
             material.EnableKeyword("_EMISSION");
     }
 
+    
     private void DeactivateLights()
     {
         foreach (var material in materialLights)
             material.DisableKeyword("_EMISSION");
+    }
+    
+
+    private static void TurnLights(string tagName, bool day)
+    {
+        var arrayLights = GameObject
+            .FindGameObjectsWithTag(tagName);
+        
+        foreach(var lightToTurn in arrayLights)
+            lightToTurn.GetComponent<Light>().enabled = !day;
     }
     
 }
