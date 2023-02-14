@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using Actions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bus : MonoBehaviour
 {
 
     [SerializeField] private float busSpeed;
-    
-    private void Update()
+
+    private void Update() => Movements.Bus(busSpeed,transform);
+
+    private void OnCollisionEnter(Collision playerCollider)
     {
-        Movements.Bus(busSpeed,transform);
+        if (playerCollider.gameObject.tag == "Player") 
+            Debug.Log("GANASTEEEE!");
     }
 }

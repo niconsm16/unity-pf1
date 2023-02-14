@@ -21,6 +21,9 @@ Usamos un switch para controlar las animaciones aleatorias de los NPC que se gen
 
 Todos los elementos del escenario tienen colisiones, desde los árboles hasta nuestro jugador, el micro y los NPC. Todos los personajes se encuentran con animaciones.
 
+El micro de momento tiene como reacción un Debug.Log diciendo que se gana cuando se colisiona contra él.
+El micro tiene un trigger contra el fin del mapa, el cual está filtrado para que sólo el micro pueda pasarlo, los NPC como nosotros no podemos cruzarlo.
+
 AGREGADOS:
 Las luces se activan automáticamente si la luz global (Sol) se pone.
 Así mismo también la luz global se desactiva luego de pasar los 180 grados (o antes).

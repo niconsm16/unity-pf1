@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 3334563856388971259}
   m_Layer: 0
   m_Name: ParadaMetrobus
-  m_TagString: Untagged
+  m_TagString: Metrobus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1610,7 +1610,7 @@ GameObject:
   - component: {fileID: 2025999151771804963}
   m_Layer: 0
   m_Name: Armazon_1
-  m_TagString: Untagged
+  m_TagString: Metrobus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3212,7 +3212,7 @@ GameObject:
   - component: {fileID: 870119384396127359}
   m_Layer: 0
   m_Name: Armazon
-  m_TagString: Untagged
+  m_TagString: Metrobus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3310,7 +3310,7 @@ GameObject:
   - component: {fileID: 2567428432831003317}
   m_Layer: 0
   m_Name: Suelo
-  m_TagString: Untagged
+  m_TagString: Metrobus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

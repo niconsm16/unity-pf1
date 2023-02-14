@@ -29,7 +29,7 @@ namespace Actions
             var vertical = Input.GetAxis("Vertical");
             var forward = transform.forward;
             var time = Input.GetKey(KeyCode.RightShift) 
-                ? Time.deltaTime * (velocity * 2)
+                ? Time.deltaTime * (velocity * 1.5f)
                 : Time.deltaTime * velocity;
             
             var rotation =

@@ -28,7 +28,7 @@ namespace Actions
             
             var back = (Input.GetKey(KeyCode.S)
                         || Input.GetKey(KeyCode.DownArrow));
-            
+
             animator.SetBool(Walk, walk);
             animator.SetBool(Run, run);
             animator.SetBool(Back, back);

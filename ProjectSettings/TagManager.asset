@@ -12,6 +12,9 @@ TagManager:
   - PoleTrafficYellow
   - PoleTrafficGreen
   - PoleTrafficLight
+  - Bus
+  - Enemy
+  - Metrobus
   layers:
   - Default
   - TransparentFX
@@ -21,10 +24,10 @@ TagManager:
   - UI
   - Street Obstacles
   - Player
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Bus
+  - Limits
+  - Bus Goal
   - 
   - 
   - 
