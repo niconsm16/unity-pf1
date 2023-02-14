@@ -20,3 +20,12 @@ micro.
 Usamos un switch para controlar las animaciones aleatorias de los NPC que se generan de forma automática.
 
 Todos los elementos del escenario tienen colisiones, desde los árboles hasta nuestro jugador, el micro y los NPC. Todos los personajes se encuentran con animaciones.
+
+AGREGADOS:
+Las luces se activan automáticamente si la luz global (Sol) se pone.
+Así mismo también la luz global se desactiva luego de pasar los 180 grados (o antes).
+
+JUEGO:
+Lo ideal es tener más de 200 NPC en escena (por desgracia mi PC no es lo
+suficientemente performante para aguantar dicha cantidad bien), y que los mismos compliquen la llegada al Micro.
+El objetivo es llegar al Micro antes de que el mismo pase el obelisco.
