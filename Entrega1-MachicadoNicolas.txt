@@ -1,0 +1,22 @@
+Nicolas Machicado Miranda: 
+Juego: Caravana
+
+Teclas: 
+Axis (AWSD, flechas) para moverse
+Space: Salta
+Ctrl: Cambia de cámara
+RightShift: Corre
+
+Cuenta con dos temporizadores:
+- El primero para no permitir el movimiento del jugador hasta que se acomode
+la cámara Intro
+- El segundo para los semáforos
+
+El juego cuenta con 4 cámaras, de las cuales 3 son funcionales en medio del juego
+
+Hay cálculos vectoriales para los NPC que bloquearán nuestro intento de llegar al
+micro.
+
+Usamos un switch para controlar las animaciones aleatorias de los NPC que se generan de forma automática.
+
+Todos los elementos del escenario tienen colisiones, desde los árboles hasta nuestro jugador, el micro y los NPC. Todos los personajes se encuentran con animaciones.
