@@ -11,6 +11,7 @@ TagManager:
   - PoleTrafficRed
   - PoleTrafficYellow
   - PoleTrafficGreen
+  - PoleTrafficLight
   layers:
   - Default
   - TransparentFX

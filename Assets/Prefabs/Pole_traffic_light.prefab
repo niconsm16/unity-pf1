@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2607581489312777086}
   - component: {fileID: 1156402849180323902}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Plane Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 7073894714325183251}
   m_Layer: 0
   m_Name: Spot Light
-  m_TagString: Untagged
+  m_TagString: PoleTrafficLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
