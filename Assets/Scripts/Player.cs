@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     private static readonly int Push = Animator.StringToHash("Push");
     [SerializeField] private float speedVelocity;
     [SerializeField] private float speedRotation;
+    [SerializeField] private LayerMask busLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private float lowDamage;
     [SerializeField] private float damage;
@@ -27,7 +28,8 @@ public class Player : MonoBehaviour
         if (!(Time.time >= (_currentTime + 4f))) return;
         
         Controllers.Player(_push ? speedVelocity * 0.3f 
-            : speedVelocity, speedRotation, transform);
+            : speedVelocity, speedRotation, transform,
+            busLayer);
         Animations.Player(animator);
     }
     

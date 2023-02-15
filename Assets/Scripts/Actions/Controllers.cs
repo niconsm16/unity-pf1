@@ -1,5 +1,4 @@
 ﻿using Cinemachine;
-using Managers;
 using UnityEngine;
 
 namespace Actions
@@ -22,28 +21,49 @@ namespace Actions
             
             cameras[_cameraSet].gameObject.SetActive(true);
         }
-        
-        public static void Player(float velocity, float rotate, Transform transform)
+
+        public static void Player(
+            float velocity, 
+            float rotate, 
+            Transform transform, 
+            LayerMask layer)
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             var forward = transform.forward;
-            var score = Input.GetKeyDown(KeyCode.Insert);
-            var time = Input.GetKey(KeyCode.RightShift) 
+            var time = Input.GetKey(KeyCode.RightShift)
                 ? Time.deltaTime * (velocity * 1.5f)
                 : Time.deltaTime * velocity;
-            
+
             var rotation =
                 new Vector3(0, horizontal, 0)
                     .normalized * rotate;
 
             transform.position +=
                 forward * (vertical * time);
-            
+
             transform.rotation *=
                 Quaternion.Euler(rotation);
-            
-            if(score) Debug.Log(GameManager.GetScore());
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                BusOnTarget();
+
+            void BusOnTarget()
+            {
+                var mira = Physics.Raycast(
+                    transform.position,
+                    transform.forward, 
+                    out var bus,
+                    25f, layer);
+
+                if (mira) Debug.Log
+                    ($"Target en la mira: " + 
+                    $"{bus.collider.name}\n" + 
+                    "Distancia: " +
+                    $"{decimal.Round((decimal)bus.distance * 6)} mts.");
+                else Debug.Log
+                    ("El objetivo no está en la mira");
+            }
         }
     }
 }

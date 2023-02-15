@@ -31,7 +31,7 @@ public class Bus : MonoBehaviour
     private void OnCollisionEnter(Collision playerCollider)
     {
         var touch = playerCollider.gameObject.CompareTag("Player");
-        
+
         if(touch) ShowScore();
         if(touch) _currentTime = Time.time;
         
