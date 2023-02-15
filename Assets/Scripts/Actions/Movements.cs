@@ -19,23 +19,22 @@ namespace Actions
             var delta = speed * Time.deltaTime;
             var distance = target.position - enemy.position;
             var newRotation = Quaternion.LookRotation(distance);
-
+            
             enemy.rotation = 
                 Quaternion.Lerp(enemy.rotation, newRotation, delta);
 
+            Vector3 RandomValue(float min, float max) => 
+                Vector3.forward * (delta * Random.Range(min, max));
+
             switch (action)
             {
-                case 4:
-                    enemy.position += Vector3.forward * (delta * 0.8f);
+                case 4: enemy.position += RandomValue(0.4f, 0.8f);
                     break;
-                case 5:
-                    enemy.position += Vector3.forward * delta;
+                case 5: enemy.position += RandomValue(0.7f, 1.2f);
                     break;
-                case 6:
-                    enemy.position += Vector3.forward * (delta * 0.6f);
+                case 6: enemy.position += RandomValue(0.3f, 0.6f);
                     break;
-                default:
-                    return;
+                default: return;
             }
         } 
     }

@@ -1,11 +1,12 @@
 ﻿using Cinemachine;
+using Managers;
 using UnityEngine;
 
 namespace Actions
 {
     public class Controllers
     {
-        private static int _cameraSet = 0;
+        private static int _cameraSet;
         public static void Camera(CinemachineVirtualCamera[] cameras)
         {
             if (!Input.GetKeyDown(KeyCode.LeftControl) &&
@@ -13,8 +14,7 @@ namespace Actions
             
             var totalCameras = cameras.Length - 1;
             
-            _cameraSet =  
-                _cameraSet < totalCameras
+            _cameraSet = _cameraSet < totalCameras
                     ? _cameraSet + 1 : 1;
             
             foreach (var camera in cameras)
@@ -28,6 +28,7 @@ namespace Actions
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
             var forward = transform.forward;
+            var score = Input.GetKeyDown(KeyCode.Insert);
             var time = Input.GetKey(KeyCode.RightShift) 
                 ? Time.deltaTime * (velocity * 1.5f)
                 : Time.deltaTime * velocity;
@@ -41,6 +42,8 @@ namespace Actions
             
             transform.rotation *=
                 Quaternion.Euler(rotation);
+            
+            if(score) Debug.Log(GameManager.GetScore());
         }
     }
 }
