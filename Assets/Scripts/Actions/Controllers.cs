@@ -91,15 +91,15 @@ namespace Actions
                 GameManager.Instance.SetPowerUps(false);
       
                 Debug.Log(isUsable 
-                    ? "se uso correctamente"
-                    :"se desperdicio");
+                    ? "El powerup se usó correctamente"
+                    :"El powerup Se desperdició (tu daño no es lo suficientemente grande)");
                 
                 Debug.Log("powerup usado: " + actualPowerUp + "pts");
-                Debug.Log("Energia actual (recuperada)" +GameManager.Instance.GetPlayerHealth());
+                Debug.Log("Energia actual (con/sin recuperación)" +GameManager.Instance.GetPlayerHealth());
 
                 Debug.Log(!HavePowerUps() 
                     ? "No te quedan más powerups" 
-                    : "Proximo powerup a usar: " + 
+                    : "Los pts del próximo powerup a usar es de: " + 
                       GameManager.Instance.GetPowerUps().Last());
             }
         }

@@ -45,12 +45,14 @@ namespace Managers
         // Getters & Setters
         
         //Score
+        
         public int GetScore() => _totalScore;
         public void SetScore(int points) => _totalScore += points;
 
         
         
         // Health
+        
         public float GetPlayerHealth() => Instance._playerHealth;
         public void SetPlayerHealth(float health)
             => Instance._playerHealth = health;
@@ -61,6 +63,7 @@ namespace Managers
         
         
         // User Data
+        
         public Dictionary<string, string> GetUserData() 
             => Instance._userData;
         private static void SetUserData(
@@ -76,10 +79,15 @@ namespace Managers
         
         
         //Power Up Levels
+        
         public Dictionary<string, float> GetPowerUpLevels() 
             => _powerupLevels;
+        
         private void SetPowerUpLevels()
         {
+            float Percent(float maxHealth, int percent) 
+                => ( maxHealth / 100 ) * percent;
+            
             if (_powerupLevels != null) return;
             
             _powerupLevels = new Dictionary<string, float>();
@@ -88,14 +96,11 @@ namespace Managers
             var maxHealth = Instance.GetPlayerHealth();
             
             _powerupLevels.Add("First", 
-                ( maxHealth / 100 ) * powerupFirstPercent );
+                Percent(maxHealth, powerupFirstPercent));
             _powerupLevels.Add("Second", 
-                ( maxHealth / 100 ) * powerupSecondPercent );
+                Percent(maxHealth, powerupSecondPercent));
             _powerupLevels.Add("Third", 
-                ( maxHealth / 100 ) * powerupThirdPercent );
-            
-            foreach(var pu in _powerupLevels)
-                Debug.Log(pu + " " + maxHealth);
+                Percent(maxHealth, powerupThirdPercent));
         }
         
         
