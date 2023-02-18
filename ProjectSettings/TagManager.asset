@@ -16,6 +16,7 @@ TagManager:
   - Enemy
   - Metrobus
   - Obelisco Light
+  - Powerup
   layers:
   - Default
   - TransparentFX

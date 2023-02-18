@@ -1,4 +1,6 @@
-﻿using Cinemachine;
+﻿using System.Linq;
+using Cinemachine;
+using Managers;
 using UnityEngine;
 
 namespace Actions
@@ -22,11 +24,14 @@ namespace Actions
             cameras[_cameraSet].gameObject.SetActive(true);
         }
 
+        
+        
         public static void Player(
-            float velocity, 
-            float rotate, 
-            Transform transform, 
-            LayerMask layer)
+            float velocity,
+            float rotate,
+            Transform transform,
+            LayerMask layer, 
+            float initialHealth)
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -48,21 +53,54 @@ namespace Actions
             if (Input.GetKeyDown(KeyCode.Backspace))
                 BusOnTarget();
 
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                UsePowerUp();
+
             void BusOnTarget()
             {
-                var mira = Physics.Raycast(
+                var sight = Physics.Raycast(
                     transform.position,
-                    transform.forward, 
+                    transform.forward,
                     out var bus,
                     25f, layer);
 
-                if (mira) Debug.Log
-                    ($"Target en la mira: " + 
-                    $"{bus.collider.name}\n" + 
-                    "Distancia: " +
-                    $"{decimal.Round((decimal)bus.distance * 6)} mts.");
-                else Debug.Log
-                    ("El objetivo no está en la mira");
+                if (sight)
+                    Debug.Log
+                    ($"Target en la sight: " +
+                     $"{bus.collider.name}\n" +
+                     "Distancia: " +
+                     $"{decimal.Round((decimal)bus.distance * 6)} mts.");
+                else
+                    Debug.Log
+                        ("El objetivo no está en la sight");
+            }
+
+            void UsePowerUp()
+            {
+                bool HavePowerUps() 
+                    => GameManager.Instance.GetPowerUps().Count != 0;
+                
+                if (!HavePowerUps()) return;
+                
+                var lostHealth = initialHealth - GameManager.Instance.GetPlayerHealth();
+                var actualPowerUp = GameManager.Instance.GetPowerUps().Last();
+                
+                var isUsable = actualPowerUp <= lostHealth;
+                if (isUsable) GameManager.Instance.SetPlayerDamage(actualPowerUp, false);
+                
+                GameManager.Instance.SetPowerUps(false);
+      
+                Debug.Log(isUsable 
+                    ? "se uso correctamente"
+                    :"se desperdicio");
+                
+                Debug.Log("powerup usado: " + actualPowerUp + "pts");
+                Debug.Log("Energia actual (recuperada)" +GameManager.Instance.GetPlayerHealth());
+
+                Debug.Log(!HavePowerUps() 
+                    ? "No te quedan más powerups" 
+                    : "Proximo powerup a usar: " + 
+                      GameManager.Instance.GetPowerUps().Last());
             }
         }
     }

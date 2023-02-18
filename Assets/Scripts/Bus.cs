@@ -20,7 +20,7 @@ public class Bus : MonoBehaviour
 
     // Main Methods
     
-    private void Awake() => GameManager.SetScore(0);
+    private void Awake() => GameManager.Instance.SetScore(0);
 
     private void Start() => ResetValues();
 
@@ -35,7 +35,7 @@ public class Bus : MonoBehaviour
         if(touch) ShowScore();
         if(touch) _currentTime = Time.time;
         
-        if (touch) GameManager.SetScore
+        if (touch) GameManager.Instance.SetScore
             (_firstTouch ? firstTouch : normalTouch);
 
         if (touch && _firstTouch) _firstTouch = false;
@@ -63,13 +63,13 @@ public class Bus : MonoBehaviour
             touch && !_superLongKeepTouch &&
             Time.time > _currentTime + 10f ;
         
-        if(littleMoment) GameManager.SetScore(keepTouch);
+        if(littleMoment) GameManager.Instance.SetScore(keepTouch);
         if (littleMoment) _keepTouch = true;
         
-        if(longMoment) GameManager.SetScore(longKeepTouch);
+        if(longMoment) GameManager.Instance.SetScore(longKeepTouch);
         if (longMoment) _longKeepTouch = true;
 
-        if (superLongMoment) GameManager.SetScore(superLongKeepTouch);
+        if (superLongMoment) GameManager.Instance.SetScore(superLongKeepTouch);
         if (superLongMoment) _superLongKeepTouch = true;
     }
 
@@ -86,5 +86,5 @@ public class Bus : MonoBehaviour
             _longKeepTouch = _superLongKeepTouch = false;
     
     private static void ShowScore() => 
-        Debug.Log(GameManager.GetScore());
+        Debug.Log(GameManager.Instance.GetScore());
 }
