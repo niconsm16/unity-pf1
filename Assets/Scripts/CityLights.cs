@@ -5,6 +5,7 @@ public class CityLights : MonoBehaviour
     [SerializeField] private GameObject sun;
     [SerializeField] private Material[] materialLights;
 
+    
     private void Start()
     {
         var sunAngle = sun.transform.eulerAngles.x;
@@ -18,17 +19,6 @@ public class CityLights : MonoBehaviour
         
         TurnLights("PoleTrafficLight", day);
         TurnLights("Obelisco Light", day);
-        // var poleLights = GameObject
-        //     .FindGameObjectsWithTag("PoleTrafficLight");
-        //
-        // var obeliscoLights = GameObject
-        //     .FindGameObjectsWithTag(("Obelisco Light"));
-        //
-        // foreach(var poleLight in poleLights)
-        //     poleLight.GetComponent<Light>().enabled = !day;
-        //
-        // foreach(var poleLight in poleLights)
-        //     poleLight.GetComponent<Light>().enabled = !day;
     }
     
 

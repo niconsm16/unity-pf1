@@ -1,23 +1,20 @@
 using System.Collections.Generic;
+using UnityEngine;
 using System.Linq;
 using Enums;
-using UnityEngine;
 
 namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private int powerupFirstPercent;
-        [SerializeField] private int powerupSecondPercent;
-        [SerializeField] private int powerupThirdPercent;
-     
+        [SerializeField] 
+        private HeartPowerupValues heartPowerUp;
         public Countries userCountry;
         public string userName;
         public int userAge;
 
         public static GameManager Instance;
         
-        private Dictionary<string, float> _powerupLevels;
         private Dictionary<string, string> _userData;
         private List<float> _powerups;
         private float _playerHealth;
@@ -56,9 +53,8 @@ namespace Managers
         public float GetPlayerHealth() => Instance._playerHealth;
         public void SetPlayerHealth(float health)
             => Instance._playerHealth = health;
-        
         public void SetPlayerDamage(float health, bool damage) 
-            => Instance._playerHealth += damage ? -health : health;
+            => Instance._playerHealth += damage ? - health : health;
 
         
         
@@ -81,26 +77,26 @@ namespace Managers
         //Power Up Levels
         
         public Dictionary<string, float> GetPowerUpLevels() 
-            => _powerupLevels;
+            => heartPowerUp._powerupLevels;
         
         private void SetPowerUpLevels()
         {
             float Percent(float maxHealth, int percent) 
                 => ( maxHealth / 100 ) * percent;
             
-            if (_powerupLevels != null) return;
+            if (heartPowerUp._powerupLevels != null) return;
             
-            _powerupLevels = new Dictionary<string, float>();
+            heartPowerUp._powerupLevels = new Dictionary<string, float>();
             _powerups = new List<float>();
             
             var maxHealth = Instance.GetPlayerHealth();
             
-            _powerupLevels.Add("First", 
-                Percent(maxHealth, powerupFirstPercent));
-            _powerupLevels.Add("Second", 
-                Percent(maxHealth, powerupSecondPercent));
-            _powerupLevels.Add("Third", 
-                Percent(maxHealth, powerupThirdPercent));
+            heartPowerUp._powerupLevels.Add("First", 
+                Percent(maxHealth, heartPowerUp.powerupFirstPercent));
+            heartPowerUp._powerupLevels.Add("Second", 
+                Percent(maxHealth, heartPowerUp.powerupSecondPercent));
+            heartPowerUp._powerupLevels.Add("Third", 
+                Percent(maxHealth, heartPowerUp.powerupThirdPercent));
         }
         
         
@@ -115,16 +111,17 @@ namespace Managers
                 switch (_powerups.Count)
                 {
                     case 0:
-                        _powerups.Add(_powerupLevels["First"]);
+                        _powerups.Add(heartPowerUp._powerupLevels["First"]);
                         break;
                     case 1:
-                        _powerups.Add(_powerupLevels["Second"]);
+                        _powerups.Add(heartPowerUp._powerupLevels["Second"]);
                         break;
                     default:
-                        _powerups.Add(_powerupLevels["Third"]);
+                        _powerups.Add(heartPowerUp._powerupLevels["Third"]);
                         break;
                 }
             else _powerups.Remove(_powerups.Last());
         }
+        
     }   
 }

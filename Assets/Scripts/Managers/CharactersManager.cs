@@ -43,7 +43,7 @@ namespace Managers
         {
             for (var i = 0; i <= enemiesQuantity; i++)
             {
-                var enemy = enemyPrefab.GetComponent<Enemy>();
+                var enemy = enemyPrefab.GetComponent<FanEnemy>();
                 enemy.target = enemyTarget;
                 
                 Instantiate(enemy, 

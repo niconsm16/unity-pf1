@@ -2,12 +2,14 @@ using UnityEngine;
 using Managers;
 using Actions;
 using Enums;
+using UI;
 
 
 public class Player : MonoBehaviour
 {
     private static readonly int Push = Animator.StringToHash("Push");
     
+    [SerializeField] private CanvasController canvas;
     [SerializeField] private float speedVelocity;
     [SerializeField] private float speedRotation;
     [SerializeField] private LayerMask busLayer;
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float lowDamage;
     [SerializeField] private float damage;
     [SerializeField] private float health;
-
+    
     private float _initialHealth;
     private float _currentTime;
     private float _damageTimer;
@@ -39,7 +41,8 @@ public class Player : MonoBehaviour
             speedRotation,
             transform,
             busLayer, 
-            _initialHealth);
+            _initialHealth,
+            canvas);
     }
     
     

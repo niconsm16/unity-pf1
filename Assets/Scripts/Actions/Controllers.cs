@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Cinemachine;
 using Managers;
+using UI;
 using UnityEngine;
 
 namespace Actions
@@ -8,6 +9,7 @@ namespace Actions
     public class Controllers
     {
         private static int _cameraSet;
+
         public static void Camera(CinemachineVirtualCamera[] cameras)
         {
             if (!Input.GetKeyDown(KeyCode.LeftControl) &&
@@ -31,7 +33,8 @@ namespace Actions
             float rotate,
             Transform transform,
             LayerMask layer, 
-            float initialHealth)
+            float initialHealth,
+            CanvasController canvas)
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -63,16 +66,16 @@ namespace Actions
                     transform.forward,
                     out var bus,
                     25f, layer);
-
-                if (sight)
-                    Debug.Log
-                    ($"Target en la sight: " +
-                     $"{bus.collider.name}\n" +
-                     "Distancia: " +
-                     $"{decimal.Round((decimal)bus.distance * 6)} mts.");
-                else
-                    Debug.Log
-                        ("El objetivo no está en la sight");
+                
+                var target = sight 
+                    ? $"Objetivo en la mira: " + 
+                      $"{bus.collider.name}\n" + 
+                      "Distancia: " + 
+                      $"{decimal.Round((decimal)bus.distance * 6)} mts."
+                    :"El objetivo no esta en la mira";
+                
+                canvas.SetLegendText(target);
+                canvas.SetLegendColor(sight);
             }
 
             void UsePowerUp()
