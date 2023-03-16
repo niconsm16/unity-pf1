@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Cinemachine;
 using Managers;
 using UI;
 using UnityEngine;
+
 
 namespace Actions
 {
@@ -34,7 +36,9 @@ namespace Actions
             Transform transform,
             LayerMask layer, 
             float initialHealth,
-            CanvasController canvas)
+            CanvasController canvas,
+            Action egoMode, 
+            Action egoModeIncrement)
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -59,6 +63,13 @@ namespace Actions
             if (Input.GetKeyDown(KeyCode.LeftShift))
                 UsePowerUp();
 
+            if (Input.GetKeyDown(KeyCode.Tab))
+                egoMode();
+            
+           if (Input.GetKeyDown(KeyCode.Q))
+            egoModeIncrement();
+            
+            
             void BusOnTarget()
             {
                 var sight = Physics.Raycast(
@@ -80,8 +91,8 @@ namespace Actions
 
             void UsePowerUp()
             {
-                bool HavePowerUps() 
-                    => GameManager.Instance.GetPowerUps().Count != 0;
+                bool HavePowerUps() => 
+                    GameManager.Instance.GetPowerUps().Count != 0;
                 
                 if (!HavePowerUps()) return;
                 
@@ -92,19 +103,9 @@ namespace Actions
                 if (isUsable) GameManager.Instance.SetPlayerDamage(actualPowerUp, false);
                 
                 GameManager.Instance.SetPowerUps(false);
-      
-                Debug.Log(isUsable 
-                    ? "El powerup se usó correctamente"
-                    :"El powerup Se desperdició (tu daño no es lo suficientemente grande)");
-                
-                Debug.Log("powerup usado: " + actualPowerUp + "pts");
-                Debug.Log("Energia actual (con/sin recuperación)" +GameManager.Instance.GetPlayerHealth());
-
-                Debug.Log(!HavePowerUps() 
-                    ? "No te quedan más powerups" 
-                    : "Los pts del próximo powerup a usar es de: " + 
-                      GameManager.Instance.GetPowerUps().Last());
             }
+
+
         }
     }
 }

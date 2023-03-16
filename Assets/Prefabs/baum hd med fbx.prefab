@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3853532191411873554}
   - component: {fileID: 3853532191402281488}
   - component: {fileID: 5987156434812693533}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: baum hd med fbx
-  m_TagString: Untagged
+  m_TagString: Trees
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

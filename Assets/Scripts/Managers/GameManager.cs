@@ -1,24 +1,40 @@
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 using System.Linq;
 using Enums;
+using ScriptableObjects;
 
 namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] 
-        private HeartPowerupValues heartPowerUp;
+        [SerializeField] private HeartPowerupValues heartPowerUp;
+        
+        
+        [Space(10)] 
+        [Header("User Data")] 
+        [SerializeField] private Player player;
         public Countries userCountry;
         public string userName;
         public int userAge;
 
         public static GameManager Instance;
         
+        [Space(10)] 
+        [Header("Bus GameObject")] 
+        [SerializeField] private Bus bus;
+        
         private Dictionary<string, string> _userData;
         private List<float> _powerups;
         private float _playerHealth;
         private int _totalScore;
+        
+        
+        // Events
+
+        public UnityEvent onDeath;
+        private void OnDeathHandler() => onDeath?.Invoke();
         
         
         // Main Methods
@@ -34,32 +50,49 @@ namespace Managers
         private void Start() 
         {
             SetPowerUpLevels();
+            InitializeEvents();
             SetUserData(userName, userAge, userCountry);
         }
 
+
+        
+
+        // Events: Init
+        private void InitializeEvents()
+        {
+            player.OnPowerup += SetPowerUps;
+            player.OnDamage += SetPlayerDamage;
+            bus.OnCollisionScore += SetScore;
+        }
         
         
         // Getters & Setters
         
-        //Score
-        
+        // // Score
         public int GetScore() => _totalScore;
         public void SetScore(int points) => _totalScore += points;
 
         
+
         
-        // Health
-        
+        // // Health
         public float GetPlayerHealth() => Instance._playerHealth;
         public void SetPlayerHealth(float health)
             => Instance._playerHealth = health;
         public void SetPlayerDamage(float health, bool damage) 
-            => Instance._playerHealth += damage ? - health : health;
+        {
+            Instance._playerHealth += damage ? -health : health;
+            
+            if(Instance._playerHealth <= 0) 
+                Instance._playerHealth = 0;
+            
+            if (Instance._playerHealth == 0)
+                OnDeathHandler();
+            
+        }
 
-        
-        
-        // User Data
-        
+
+        // // User Data
         public Dictionary<string, string> GetUserData() 
             => Instance._userData;
         private static void SetUserData(
@@ -74,35 +107,34 @@ namespace Managers
         
         
         
-        //Power Up Levels
-        
+        // // Power Up Levels
         public Dictionary<string, float> GetPowerUpLevels() 
-            => heartPowerUp._powerupLevels;
+            => heartPowerUp.powerupLevels;
         
         private void SetPowerUpLevels()
         {
             float Percent(float maxHealth, int percent) 
                 => ( maxHealth / 100 ) * percent;
             
-            if (heartPowerUp._powerupLevels != null) return;
+            if (heartPowerUp.powerupLevels != null) return;
             
-            heartPowerUp._powerupLevels = new Dictionary<string, float>();
+            heartPowerUp.powerupLevels = new Dictionary<string, float>();
             _powerups = new List<float>();
             
             var maxHealth = Instance.GetPlayerHealth();
             
-            heartPowerUp._powerupLevels.Add("First", 
+            heartPowerUp.powerupLevels.Add("First", 
                 Percent(maxHealth, heartPowerUp.powerupFirstPercent));
-            heartPowerUp._powerupLevels.Add("Second", 
+            heartPowerUp.powerupLevels.Add("Second", 
                 Percent(maxHealth, heartPowerUp.powerupSecondPercent));
-            heartPowerUp._powerupLevels.Add("Third", 
+            heartPowerUp.powerupLevels.Add("Third", 
                 Percent(maxHealth, heartPowerUp.powerupThirdPercent));
         }
         
         
         
         
-        // Power Ups
+        // // Power Ups
         public List<float> GetPowerUps() => _powerups;
 
         public void SetPowerUps(bool toAdd)
@@ -111,13 +143,13 @@ namespace Managers
                 switch (_powerups.Count)
                 {
                     case 0:
-                        _powerups.Add(heartPowerUp._powerupLevels["First"]);
+                        _powerups.Add(heartPowerUp.powerupLevels["First"]);
                         break;
                     case 1:
-                        _powerups.Add(heartPowerUp._powerupLevels["Second"]);
+                        _powerups.Add(heartPowerUp.powerupLevels["Second"]);
                         break;
                     default:
-                        _powerups.Add(heartPowerUp._powerupLevels["Third"]);
+                        _powerups.Add(heartPowerUp.powerupLevels["Third"]);
                         break;
                 }
             else _powerups.Remove(_powerups.Last());

@@ -1,3 +1,4 @@
+using System;
 using Actions;
 using Managers;
 using UnityEngine;
@@ -6,18 +7,28 @@ public class Bus : MonoBehaviour
 {
 
     [SerializeField] private float busSpeed;
-    [SerializeField] private int keepTouch;
-    [SerializeField] private int firstTouch;
-    [SerializeField] private int normalTouch;
-    [SerializeField] private int longKeepTouch;
-    [SerializeField] private int superLongKeepTouch;
+    [SerializeField] private int keepTouchPoints;
+    [SerializeField] private int firstTouchPoints;
+    [SerializeField] private int normalTouchPoints;
+    [SerializeField] private int longKeepTouchPoints;
+    [SerializeField] private int superLongKeepTouchPoints;
+    [SerializeField] private GameManager gameManager;
     private float _currentTime;
-    private bool _keepTouch;
-    private bool _normalTouch;
-    private bool _longKeepTouch;
-    private bool _firstTouch = true;
-    private bool _superLongKeepTouch;
+    private bool _keepTouchPoints;
+    private bool _normalTouchPoints;
+    private bool _longKeepTouchPoints;
+    private bool _firstTouchPoints = true;
+    private bool _superLongKeepTouchPoints;
 
+    
+    
+    // Events
+    public event Action<int> OnCollisionScore;
+    private void OnCollisionScoreHandler(int touchPoints) =>
+        OnCollisionScore?.Invoke(touchPoints);
+    
+    
+    
     // Main Methods
     
     private void Awake() => GameManager.Instance.SetScore(0);
@@ -35,11 +46,12 @@ public class Bus : MonoBehaviour
         if(touch) ShowScore();
         if(touch) _currentTime = Time.time;
         
-        if (touch) GameManager.Instance.SetScore
-            (_firstTouch ? firstTouch : normalTouch);
+        if (touch) OnCollisionScoreHandler(_firstTouchPoints 
+            ? firstTouchPoints : normalTouchPoints);
+        // if (touch) GameManager.Instance.SetScore
 
-        if (touch && _firstTouch) _firstTouch = false;
-        if (touch && !_normalTouch) _normalTouch = true;
+        if (touch && _firstTouchPoints) _firstTouchPoints = false;
+        if (touch && !_normalTouchPoints) _normalTouchPoints = true;
     }
 
 
@@ -52,25 +64,25 @@ public class Bus : MonoBehaviour
         var littleMoment = touch &&
             Time.time > _currentTime + 3f && 
             Time.time <= _currentTime + 6f &&
-            !_keepTouch;
+            !_keepTouchPoints;
 
         var longMoment = touch &&
             Time.time > _currentTime + 6f && 
             Time.time <= _currentTime + 10f &&
-            !_longKeepTouch;
+            !_longKeepTouchPoints;
 
         var superLongMoment = 
-            touch && !_superLongKeepTouch &&
+            touch && !_superLongKeepTouchPoints &&
             Time.time > _currentTime + 10f ;
         
-        if(littleMoment) GameManager.Instance.SetScore(keepTouch);
-        if (littleMoment) _keepTouch = true;
+        if(littleMoment) GameManager.Instance.SetScore(keepTouchPoints);
+        if (littleMoment) _keepTouchPoints = true;
         
-        if(longMoment) GameManager.Instance.SetScore(longKeepTouch);
-        if (longMoment) _longKeepTouch = true;
+        if(longMoment) GameManager.Instance.SetScore(longKeepTouchPoints);
+        if (longMoment) _longKeepTouchPoints = true;
 
-        if (superLongMoment) GameManager.Instance.SetScore(superLongKeepTouch);
-        if (superLongMoment) _superLongKeepTouch = true;
+        if (superLongMoment) GameManager.Instance.SetScore(superLongKeepTouchPoints);
+        if (superLongMoment) _superLongKeepTouchPoints = true;
     }
 
     private void OnCollisionExit(Collision playerCollider)
@@ -82,8 +94,8 @@ public class Bus : MonoBehaviour
 
     // Private Methods
     
-    private void ResetValues() => _keepTouch = _normalTouch = 
-            _longKeepTouch = _superLongKeepTouch = false;
+    private void ResetValues() => _keepTouchPoints = _normalTouchPoints = 
+            _longKeepTouchPoints = _superLongKeepTouchPoints = false;
     
     private static void ShowScore() => 
         Debug.Log(GameManager.Instance.GetScore());

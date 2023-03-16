@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 8534965807958647699}
   - component: {fileID: 6249727995784473837}
   - component: {fileID: 8534965807963770515}
-  m_Layer: 0
+  - component: {fileID: 3576164165161735027}
+  m_Layer: 13
   m_Name: baum hd pine fbx
-  m_TagString: Untagged
+  m_TagString: Trees
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,3 +121,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!54 &3576164165161735027
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8534965807956393299}
+  serializedVersion: 2
+  m_Mass: 200
+  m_Drag: 200
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

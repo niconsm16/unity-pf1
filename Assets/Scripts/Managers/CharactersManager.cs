@@ -1,11 +1,14 @@
 using UnityEngine;
 using Helpers;
 using Triggers;
+using Unity.VisualScripting;
+using UnityEngine.Events;
 
 namespace Managers
 {
     public class CharactersManager : MonoBehaviour
     {
+        [Header("Enemies Generator")]
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private Material[] enemyShirts;
         [SerializeField] private Material[] enemyHairs;
@@ -16,12 +19,16 @@ namespace Managers
         [SerializeField] private Transform enemyTarget;
         [SerializeField] private int enemiesQuantity;
 
+        [Space(10)]
+        [Header("Powerups Generator")]
         [SerializeField] private GameObject powerUpPrefab;
         [SerializeField] private Transform powerupPointA;
         [SerializeField] private Transform powerupPointB;
         [SerializeField] private int powerupsQuantity;
-        
+
         public static CharactersManager Instance;
+        
+        
         // Main Methods
 
         private void Awake()
@@ -60,7 +67,7 @@ namespace Managers
         {
             for (var i = 0; i < powerupsQuantity; i++)
             {
-                var powerup = powerUpPrefab.GetComponent<HeartPowerup>();
+                var powerup = powerUpPrefab.GetComponent<HeartPowerup>(); ;
                 Instantiate(powerup, 
                     Arbitrary.Position(powerupPointA, powerupPointB), 
                     Quaternion.identity);

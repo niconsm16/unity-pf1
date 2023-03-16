@@ -1,15 +1,21 @@
-using System;
+using UnityEngine.Events;
+using UnityEngine;
 using Managers;
 using UI;
-using UnityEngine;
 
 namespace Triggers
 {
     public class BusGoal : MonoBehaviour
     {
-        [SerializeField] private LayerMask busLayer;
         [SerializeField] private CanvasController canvas;
+        [SerializeField] private LayerMask busLayer;
         private bool _finish;
+
+        // Events
+        public UnityEvent<int, decimal, decimal> onGoal;
+        private void OnGoalHandler(int score, decimal health, decimal totalRounded) 
+            => onGoal?.Invoke(score, health, totalRounded);
+        
         
         // Main Methods
         
@@ -21,22 +27,10 @@ namespace Triggers
 
         // Collider Methods
         
-        private void OnTriggerExit(Collider busCollider)
-        {
-            var bus = busCollider.GetComponent<Bus>();
-            
-            if (!bus) return;
-            
-            var score = GameManager.Instance.GetScore();
-            var health = decimal.Round
-                ((decimal)GameManager.Instance.GetPlayerHealth(),2);
-            var total = health * (score == 0 ? 1 : score);
-            var totalRounded = decimal.Round
-                ((decimal)total, 0); 
-            
-            if(!_finish) canvas.SetFinalScore(score, health, totalRounded);
-            if (!_finish) _finish = true;
-        }
+        private void OnTriggerExit(Collider collision)
+            => BusOnGoal(collision);
+        
+
         
         // Methods
 
@@ -75,7 +69,23 @@ namespace Triggers
                     break;
             }
 
-                
         }
+        
+        private void BusOnGoal (Component busCollider)
+        {
+            var bus = busCollider.GetComponent<Bus>();
+        
+            if (!bus) return;
+        
+            var score = GameManager.Instance.GetScore();
+            var health = decimal.Round
+                ((decimal)GameManager.Instance.GetPlayerHealth(),2);
+            var total = health * (score == 0 ? 1 : score);
+            var totalRounded = decimal.Round
+                (total, 0); 
+        
+            if(!_finish) OnGoalHandler(score, health, totalRounded);
+            if (!_finish) _finish = true;            
+        }                
     }
 }

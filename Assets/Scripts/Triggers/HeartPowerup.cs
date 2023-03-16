@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Triggers
 {
@@ -6,8 +8,20 @@ namespace Triggers
     {
         [SerializeField] private float rotateVelocity;
         
+        
         // Main Methods
-        private void Update()
+        private void Update() => PowerupRotate();
+        
+        
+        
+        // Triggers
+        private void OnTriggerEnter(Collider collision)
+            => PowerupDestroy(collision);
+        
+        
+        // Methods
+
+        private void PowerupRotate()
         {
             var rotation = 
                 new Vector3(0, 1, 0)
@@ -16,14 +30,14 @@ namespace Triggers
             transform.rotation *= Quaternion.Euler(rotation);
         }
         
-        
-        // Triggers
-        private void OnTriggerEnter(Collider playerCollider)
+        private void PowerupDestroy(Component playerCollider)
         {
             var player = playerCollider
                 .gameObject.CompareTag("Player");
+
+            if (!player) return;
             
-            if (player) Destroy(gameObject);
+            Destroy(gameObject);            
         }
     }
 }

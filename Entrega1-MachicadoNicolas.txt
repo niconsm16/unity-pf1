@@ -32,3 +32,15 @@ JUEGO:
 Lo ideal es tener más de 200 NPC en escena (por desgracia mi PC no es lo
 suficientemente performante para aguantar dicha cantidad bien), y que los mismos compliquen la llegada al Micro.
 El objetivo es llegar al Micro antes de que el mismo pase el obelisco.
+
+=======================================================
+
+BOTONES:
+
+AWSD : Movimientos
+Space: Salto
+Backspace: Locación del Micro
+LeftShift: Uso de powerups
+RightShift: Correr
+Ctrl: Cambio de cámaras
+Tab: Efecto Ego

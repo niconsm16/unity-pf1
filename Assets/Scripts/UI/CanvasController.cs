@@ -1,53 +1,129 @@
-using System;
 using Managers;
 using TMPro;
+using Triggers;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
 namespace UI
 {
     public class CanvasController : MonoBehaviour
     {
+        // For Events
+        [Header("For Events")] 
+        private float _hpuTimeToClose;
+        [SerializeField] private float powerupTimeToClose;
+        [SerializeField] private Player player;
+        [SerializeField] private BusGoal busGoalObject;
+        [SerializeField] private GameManager gameManager;
+        
+        // Health & Powerup Panels (Inferior)
+        private float _health;
+        [Space(10)]
+        [Header("Inferior Panel (Health & Powerups")]
+        [SerializeField] private Image energyIcon;
+        [SerializeField] private Image powerupIcon;
         [SerializeField] private TMP_Text powerups;
         [SerializeField] private TMP_Text energyMeter;
         [SerializeField] private TMP_Text powerupMeter;
-        [SerializeField] private Image legendBackground;
-        [SerializeField] private Image powerupIcon;
-        [SerializeField] private Image energyIcon;
-        [SerializeField] private TMP_Text busGoal;
-        [SerializeField] private TMP_Text legend;
-        [SerializeField] private TMP_Text energyNumber;
-        [SerializeField] private TMP_Text scoreNumber;
-        [SerializeField] private TMP_Text ptsNumber;
-        [SerializeField] private GameObject scorePanel;
-        private float _legendColorAlpha;
-        private Color _legendColor;
-        private float _health;
 
+        // Legends Panel (Superior)
+        private Color _legendColor;
+        private float _legendColorAlpha;
+        [Space(10)]
+        [Header("Superior Panel (Legends)")]
+        [SerializeField] private TMP_Text legend;
+        [SerializeField] private TMP_Text busGoal;
+        [SerializeField] private Image legendBackground;
+        
+        // Score Goal Panel
+        [Space(10)]
+        [Header("Goal (Score) Panel")]
+        [SerializeField] private TMP_Text ptsNumber;
+        [SerializeField] private TMP_Text scoreNumber;
+        [SerializeField] private TMP_Text energyNumber;
+        [SerializeField] private GameObject scorePanel;
+        
+        // Death Panel
+        [Space(10)] 
+        [Header("Death Panel")] 
+        [SerializeField] private GameObject deathPanel;
+        
+        // Heart Powerup Panel
+        [SerializeField] private GameObject heartPowerupPanel;
+        
+        // Main Methods
 
         private void Awake() => _legendColorAlpha = 1;
 
-        private void Start() => SetStartValues();
-    
-
+        private void Start()
+        {
+            SetStartValues();
+            InitializeEvents();
+        }
 
         private void Update()
+        {
+
+            SetPanelValues();
+            AutoClosePanel("heart");
+            
+            RotateIcons();
+            PowerupsText();
+            DamageReactionText();
+            SetLegendTransparency();
+        }
+        
+        
+        // Events
+        private void InitializeEvents()
+        {
+            gameManager.onDeath.AddListener(ShowDeathPanel);
+            busGoalObject.onGoal.AddListener(ShowScorePanel);
+            player.onTouch.AddListener(ShowHeartPowerupPanel);
+        }
+
+
+        // Methods
+
+        private void SetStartValues ()
+        {
+            _health = GameManager.Instance.GetPlayerHealth();
+            _hpuTimeToClose = 0;
+        }
+        
+        // // Set Panels
+        private void ShowDeathPanel() => deathPanel.SetActive(true);
+        
+        private void ShowScorePanel(int score, decimal health, decimal total)
+        {
+            scorePanel.SetActive(true);
+            ptsNumber.text = score.ToString();
+            energyNumber.text = health.ToString();
+            scoreNumber.text = total.ToString();
+        }
+
+        private void ShowHeartPowerupPanel(float timeNow)
+            => _hpuTimeToClose = timeNow + powerupTimeToClose;
+
+        private void AutoClosePanel(string powerup)
+        {
+            if (!powerup.Equals("heart")) return;
+            var timeToClose = !(_hpuTimeToClose < Time.time);
+            heartPowerupPanel.SetActive(timeToClose);
+        }
+
+        private void SetPanelValues()
         {
             var health = GameManager.Instance.GetPlayerHealth();
             var powerups = GameManager.Instance.GetPowerUps();
         
             energyMeter.text = health.ToString(health == 100 ? "": "0.00") + "%";
             powerupMeter.text = powerups.Count.ToString();
-        
-            RotateIcons();
-            PowerupsText();
-            DamageReactionText();
-            SetLegendTransparency();
         }
 
+
+        // // Panel: Inferior
+        
         private void RotateIcons()
         {
             var yAxis = new Vector3(0, 10, 0);
@@ -98,8 +174,7 @@ namespace UI
             };
         }
 
-        private void SetStartValues () => 
-            _health = GameManager.Instance.GetPlayerHealth();
+        // // Panel: Superior
 
         public void SetLegendText (string actualLegend) 
             => legend.text = actualLegend;
@@ -138,12 +213,6 @@ namespace UI
             if (isTransparent) _legendColorAlpha = 1;
         }
 
-        public void SetFinalScore(int score, decimal health, decimal total)
-        {
-            scorePanel.SetActive(true);
-            ptsNumber.text = score.ToString();
-            energyNumber.text = health.ToString();
-            scoreNumber.text = total.ToString();
-        }
+
     }
 }

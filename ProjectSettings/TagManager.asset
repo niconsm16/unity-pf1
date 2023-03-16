@@ -17,6 +17,7 @@ TagManager:
   - Metrobus
   - Obelisco Light
   - Powerup
+  - Trees
   layers:
   - Default
   - TransparentFX
@@ -30,8 +31,8 @@ TagManager:
   - Bus
   - Limits
   - Bus Goal
-  - 
-  - 
+  - Camera
+  - Trees
   - 
   - 
   - 
