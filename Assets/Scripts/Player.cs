@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float lowDamage;
     [SerializeField] private float damage;
     [SerializeField] private float health;
-    
+
     private float _initialHealth;
     private float _currentTime;
     private float _damageTimer;
@@ -34,12 +34,16 @@ public class Player : MonoBehaviour
     public UnityEvent<float> onTouch;
     public event Action<bool> OnPowerup;
     public event Action<float, bool> OnDamage;
+
+    public UnityEvent OnUsePowerup;
     private void OnTouchHandler(float time)
         => onTouch?.Invoke(time);
     private void OnPowerupHandler(bool toAdd)
         => OnPowerup?.Invoke(toAdd);
     private void OnDamageHandler(float actualDamage, bool isDamage)
-        => OnDamage?.Invoke(actualDamage, isDamage); 
+        => OnDamage?.Invoke(actualDamage, isDamage);
+    private void OnUsePowerupHandler() 
+        => OnUsePowerup?.Invoke();
 
 
 
@@ -61,7 +65,8 @@ public class Player : MonoBehaviour
             _initialHealth,
             canvas, 
             EgoMode,
-            EgoModeIncrement);
+            EgoModeIncrement,
+            OnUsePowerupHandler);
     }
     
     
@@ -114,6 +119,9 @@ public class Player : MonoBehaviour
         egoVolume.gameObject.SetActive(_egoMode);
     }
 
+    
+    
+    
     // // Enemies Collisions
     private void EnemyFirstCollide(Collision enemyCollider)
     {
@@ -154,6 +162,8 @@ public class Player : MonoBehaviour
     }
     
     
+    
+    
     // // Powerups
     private void GetPowerup(Component powerupTrigger)
     {
@@ -164,6 +174,9 @@ public class Player : MonoBehaviour
         var timeNow = Time.time;
         OnTouchHandler(timeNow);
     } 
+    
+    
+    
     
     // // Volume
     private void EgoMode()
@@ -178,6 +191,5 @@ public class Player : MonoBehaviour
         profile.TryGet(out Bloom _bloom);
         _bloom.threshold.value -= 0.05f;
     }
-
 }
 

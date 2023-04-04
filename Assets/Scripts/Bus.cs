@@ -1,7 +1,8 @@
-using System;
-using Actions;
-using Managers;
+using UnityEngine.Events;
 using UnityEngine;
+using Managers;
+using Actions;
+using System;
 
 public class Bus : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class Bus : MonoBehaviour
     [SerializeField] private int normalTouchPoints;
     [SerializeField] private int longKeepTouchPoints;
     [SerializeField] private int superLongKeepTouchPoints;
-    [SerializeField] private GameManager gameManager;
     private float _currentTime;
     private bool _keepTouchPoints;
     private bool _normalTouchPoints;
@@ -22,10 +22,16 @@ public class Bus : MonoBehaviour
 
     
     
+    
     // Events
     public event Action<int> OnCollisionScore;
-    private void OnCollisionScoreHandler(int touchPoints) =>
+    public UnityEvent OnCollisionStayPlayer;
+    
+    private void OnCollisionScoreHandler(int touchPoints) => 
         OnCollisionScore?.Invoke(touchPoints);
+    private void OnCollisionStayPlayerHandler() => 
+        OnCollisionStayPlayer?.Invoke();
+    
     
     
     
@@ -37,18 +43,19 @@ public class Bus : MonoBehaviour
 
     private void Update() => Movements.Bus(busSpeed,transform);
 
+    
+    
+    
     // Collisions
     
     private void OnCollisionEnter(Collision playerCollider)
     {
         var touch = playerCollider.gameObject.CompareTag("Player");
-
-        if(touch) ShowScore();
+        
         if(touch) _currentTime = Time.time;
         
         if (touch) OnCollisionScoreHandler(_firstTouchPoints 
             ? firstTouchPoints : normalTouchPoints);
-        // if (touch) GameManager.Instance.SetScore
 
         if (touch && _firstTouchPoints) _firstTouchPoints = false;
         if (touch && !_normalTouchPoints) _normalTouchPoints = true;
@@ -59,7 +66,7 @@ public class Bus : MonoBehaviour
     {
         var touch = playerCollider.gameObject.CompareTag("Player");
         
-        if(touch) ShowScore();
+        if (touch) OnCollisionStayPlayerHandler();
         
         var littleMoment = touch &&
             Time.time > _currentTime + 3f && 
@@ -91,12 +98,11 @@ public class Bus : MonoBehaviour
         if(touch) ResetValues();
     }
         
+    
+    
 
     // Private Methods
     
     private void ResetValues() => _keepTouchPoints = _normalTouchPoints = 
             _longKeepTouchPoints = _superLongKeepTouchPoints = false;
-    
-    private static void ShowScore() => 
-        Debug.Log(GameManager.Instance.GetScore());
 }

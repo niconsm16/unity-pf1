@@ -44,3 +44,5 @@ LeftShift: Uso de powerups
 RightShift: Correr
 Ctrl: Cambio de cámaras
 Tab: Efecto Ego
+Q: Incrementa efecto Ego
+Esc: Retorna al menú principal

@@ -3308,6 +3308,7 @@ GameObject:
   - component: {fileID: 1407257397042549334}
   - component: {fileID: 5118924999660531063}
   - component: {fileID: 2567428432831003317}
+  - component: {fileID: 1420391561021469727}
   m_Layer: 0
   m_Name: Suelo
   m_TagString: Metrobus
@@ -3391,9 +3392,22 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8228781567581644346, guid: 52ecb93b1812dc74ea4f6c9801271bfc, type: 3}
+--- !u!65 &1420391561021469727
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8216192296945872641}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 458.56116, y: 116.437, z: 3690}
+  m_Center: {x: -20.502312, y: 17.002571, z: -1486}
 --- !u!1 &8619478650674730659
 GameObject:
   m_ObjectHideFlags: 0

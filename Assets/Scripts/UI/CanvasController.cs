@@ -1,7 +1,9 @@
+using MainMenu.Scripts.Utilities;
 using Managers;
 using TMPro;
 using Triggers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Image = UnityEngine.UI.Image;
 
 namespace UI
@@ -15,6 +17,7 @@ namespace UI
         [SerializeField] private Player player;
         [SerializeField] private BusGoal busGoalObject;
         [SerializeField] private GameManager gameManager;
+        [SerializeField] private GameObject helpMenu;
         
         // Health & Powerup Panels (Inferior)
         private float _health;
@@ -25,6 +28,7 @@ namespace UI
         [SerializeField] private TMP_Text powerups;
         [SerializeField] private TMP_Text energyMeter;
         [SerializeField] private TMP_Text powerupMeter;
+        [SerializeField] private TMP_Text scoreMeter;
 
         // Legends Panel (Superior)
         private Color _legendColor;
@@ -51,6 +55,15 @@ namespace UI
         // Heart Powerup Panel
         [SerializeField] private GameObject heartPowerupPanel;
         
+        // Black Screen Panel
+        [SerializeField] private Image blackScreen;
+        [SerializeField] private float fadeDuration;
+        private bool _onDeath;
+        private bool _onGoal;
+        private float _count;
+        
+        
+        
         // Main Methods
 
         private void Awake() => _legendColorAlpha = 1;
@@ -71,10 +84,14 @@ namespace UI
             PowerupsText();
             DamageReactionText();
             SetLegendTransparency();
+            
+            ShowHelpMenu();
+            BlackScreenFadeIn();
         }
         
         
         // Events
+        
         private void InitializeEvents()
         {
             gameManager.onDeath.AddListener(ShowDeathPanel);
@@ -89,7 +106,13 @@ namespace UI
         {
             _health = GameManager.Instance.GetPlayerHealth();
             _hpuTimeToClose = 0;
+            _onDeath = false;
+            _onGoal = false;
+            _count = 0;
         }
+        
+        
+        
         
         // // Set Panels
         private void ShowDeathPanel() => deathPanel.SetActive(true);
@@ -119,8 +142,11 @@ namespace UI
         
             energyMeter.text = health.ToString(health == 100 ? "": "0.00") + "%";
             powerupMeter.text = powerups.Count.ToString();
+            scoreMeter.text = GameManager.Instance.GetScore().ToString();
         }
 
+        
+        
 
         // // Panel: Inferior
         
@@ -174,6 +200,9 @@ namespace UI
             };
         }
 
+        
+        
+        
         // // Panel: Superior
 
         public void SetLegendText (string actualLegend) 
@@ -213,6 +242,35 @@ namespace UI
             if (isTransparent) _legendColorAlpha = 1;
         }
 
+        
+        
+        
+        // Panel: Help
+        private void ShowHelpMenu()
+        {
+            if (!Input.GetKeyDown(KeyCode.F1)) return;
+            var show = helpMenu.activeSelf;
+            helpMenu.SetActive(!show);
+        }
+        
+        
+        
+        // Panel: Black Screen
+        private void BlackScreenFadeIn()
+        {
+            if (!_onDeath && !_onGoal) return;
 
+            _count = Timer.TimerIncrease(_count);
+            Effects.Fader(blackScreen,_count, fadeDuration);
+            
+            if(_count >= fadeDuration)
+                SceneManager.LoadScene("MainMenu");
+        }
+
+        public void OnDeathSignal() => 
+            _onDeath = true;
+
+        public void OnGoalSignal() => 
+            _onGoal = true;
     }
 }

@@ -4,6 +4,7 @@ using Cinemachine;
 using Managers;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 namespace Actions
@@ -38,7 +39,8 @@ namespace Actions
             float initialHealth,
             CanvasController canvas,
             Action egoMode, 
-            Action egoModeIncrement)
+            Action egoModeIncrement,
+            Action OnUsePowerupHandler)
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
@@ -67,8 +69,11 @@ namespace Actions
                 egoMode();
             
            if (Input.GetKeyDown(KeyCode.Q))
-            egoModeIncrement();
-            
+               egoModeIncrement();
+
+           if (Input.GetKeyDown(KeyCode.Escape))
+               SceneManager.LoadScene("MainMenu");
+           
             
             void BusOnTarget()
             {
@@ -91,10 +96,10 @@ namespace Actions
 
             void UsePowerUp()
             {
-                bool HavePowerUps() => 
-                    GameManager.Instance.GetPowerUps().Count != 0;
+                bool HavePowerUps() => GameManager.Instance.GetPowerUps().Count != 0;
                 
                 if (!HavePowerUps()) return;
+                
                 
                 var lostHealth = initialHealth - GameManager.Instance.GetPlayerHealth();
                 var actualPowerUp = GameManager.Instance.GetPowerUps().Last();
@@ -103,6 +108,7 @@ namespace Actions
                 if (isUsable) GameManager.Instance.SetPlayerDamage(actualPowerUp, false);
                 
                 GameManager.Instance.SetPowerUps(false);
+                OnUsePowerupHandler();
             }
 
 

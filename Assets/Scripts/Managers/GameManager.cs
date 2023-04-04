@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
+using ScriptableObjects;
 using UnityEngine;
 using System.Linq;
 using Enums;
-using ScriptableObjects;
 
 namespace Managers
 {
@@ -31,10 +31,14 @@ namespace Managers
         private int _totalScore;
         
         
+        
+        
         // Events
 
         public UnityEvent onDeath;
         private void OnDeathHandler() => onDeath?.Invoke();
+        
+        
         
         
         // Main Methods
@@ -58,12 +62,16 @@ namespace Managers
         
 
         // Events: Init
+        
         private void InitializeEvents()
         {
             player.OnPowerup += SetPowerUps;
             player.OnDamage += SetPlayerDamage;
             bus.OnCollisionScore += SetScore;
+            
         }
+        
+        
         
         
         // Getters & Setters
@@ -76,9 +84,12 @@ namespace Managers
 
         
         // // Health
+        
         public float GetPlayerHealth() => Instance._playerHealth;
+        
         public void SetPlayerHealth(float health)
             => Instance._playerHealth = health;
+        
         public void SetPlayerDamage(float health, bool damage) 
         {
             Instance._playerHealth += damage ? -health : health;
@@ -88,8 +99,9 @@ namespace Managers
             
             if (Instance._playerHealth == 0)
                 OnDeathHandler();
-            
         }
+
+
 
 
         // // User Data
@@ -104,6 +116,7 @@ namespace Managers
             Instance._userData.Add("Edad", age.ToString());
             Instance._userData.Add("País", country.ToString());
         }
+        
         
         
         

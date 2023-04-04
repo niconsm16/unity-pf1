@@ -1,13 +1,38 @@
+using System;
 using UnityEngine;
 
 public class CityLights : MonoBehaviour
 {
     [SerializeField] private GameObject sun;
     [SerializeField] private Material[] materialLights;
+    private bool _activated;
+    private Light _sun;
+    private GameObject[] _poleTrafficLights;
+    private GameObject[] _obeliscoLights;
 
-    
-    private void Start()
+    private void Awake()
     {
+        _activated = false;
+        _sun = sun.GetComponent<Light>();
+        _poleTrafficLights = GameObject.FindGameObjectsWithTag("PoleTrafficLight");
+        _obeliscoLights = GameObject.FindGameObjectsWithTag("Obelisco Light");
+    }
+
+
+    private void Update()
+    {
+        _activated = true;
+    }
+    
+    private void FixedUpdate()
+    {
+       SetInfoLights();
+    }
+
+    private void SetInfoLights()
+    {
+        if (_activated) return;
+        
         var sunAngle = sun.transform.eulerAngles.x;
         var day = sunAngle > 9.5 && sunAngle < 168;
         var night = sunAngle is < 0 or > 180;
@@ -15,12 +40,11 @@ public class CityLights : MonoBehaviour
         if (day) DeactivateLights();
         else ActivateLights();
         
-        sun.GetComponent<Light>().enabled = !night;
+        _sun.enabled = !night;
         
-        TurnLights("PoleTrafficLight", day);
-        TurnLights("Obelisco Light", day);
+        TurnLights(_poleTrafficLights, day);
+        TurnLights(_obeliscoLights, day);
     }
-    
 
     private void ActivateLights()
     {
@@ -36,13 +60,10 @@ public class CityLights : MonoBehaviour
     }
     
 
-    private static void TurnLights(string tagName, bool day)
+    private static void TurnLights(GameObject[] arrayLights, bool day)
     {
-        var arrayLights = GameObject
-            .FindGameObjectsWithTag(tagName);
-        
-        foreach(var lightToTurn in arrayLights)
-            lightToTurn.GetComponent<Light>().enabled = !day;
+        foreach(var light in arrayLights)
+            light.GetComponent<Light>().enabled = !day;
     }
     
 }
